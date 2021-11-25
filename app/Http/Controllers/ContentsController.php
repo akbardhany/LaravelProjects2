@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Contents;
 use Session;
 use Redirect;
@@ -16,7 +17,9 @@ class ContentsController extends Controller
      */
     public function index()
     {
-        $contents = Contents::latest()->paginate(25);
+        $contents = Contents::latest()
+            ->where('createdBy','=',Auth::user()->name)
+            ->paginate(25);
         return view('admin.index', ['contents' => $contents]);
     }
 
